@@ -30,13 +30,7 @@ function [dPrime, c, beta] = d_prime(sample, mouseID)
     beta = exp(dPrime*c); % Likelihood Ratio
     
     %% Save Data
-    dataFileName = ['d_prime_', num2str(mouseID) ,'.csv'];
-    
-    fileID1 = fopen(dataFileName, 'a');
-    
-    dataExport = [dPrime, c, beta];
-    formatSpec = '%s %.4f %.4f %.4f\n';
-    fprintf(fileID1, formatSpec, date, dataExport);
-    
-    fclose(fileID1);
+    dataFileName = 'd_prime_' + num2str(mouseID) + '.csv';
+    fileID1 = fopen(dataFileName, 'w');
+    dataExport = {date, dPrime, 
 end
