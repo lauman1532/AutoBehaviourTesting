@@ -10,16 +10,16 @@ function [dPrime, c, beta] = d_prime(sample, mouseID)
         'CommentStyle', '//');
     fclose(fileID);
 
-    %% Data
+    %% Data Pre-processing
     calInterval = 1; % d' measuring interval
     nTrials = length(data{2}); % total no. of trials
     nHit = sum(data{2}); % no. of hits
     nFA = sum(data{3}); % no. of false alarms
     nM = sum(data{4}); % no. of misses
-    nCR = sum(data{5}); % no. of correct rejections
+    %nCR = sum(data{5}); % no. of correct rejections
 
     %% Calculate d' (SDT)
-    HR = nHit/(nHit+nFA); % Hit rate
+    HR = nHit/(nHit+nM); % Hit rate
     FAR = nFA/(nM+nFA); % False alarm rate
 
     zHR = norminv(HR); % z-score of HR
@@ -36,7 +36,7 @@ function [dPrime, c, beta] = d_prime(sample, mouseID)
     
     dataExport = [dPrime, c, beta];
     formatSpec = '%s %.4f %.4f %.4f\n';
-    fprintf(fileID1, formatSpec, date, dataExport);
+    fprintf(fileID1, formatSpec, datestr(now), dataExport);
     
     fclose(fileID1);
 end
