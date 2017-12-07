@@ -1,5 +1,5 @@
 %%% d_prime calculation
-%%% 27/11/2018
+%%% 07/12/2017
 %%% Vick Lau
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -18,7 +18,7 @@ function [dPrime, c, beta] = d_prime(sample, mouseID)
     nM = sum(data{4}); % no. of misses
     %nCR = sum(data{5}); % no. of correct rejections
 
-    %% Calculate d' (SDT)
+    %% Calculate d' (SDT equal-var model)
     HR = nHit/(nHit+nM); % Hit rate
     FAR = nFA/(nM+nFA); % False alarm rate
 
