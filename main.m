@@ -8,12 +8,19 @@ clc; clear variables; close all
 %% Initialise Arduino for direct reading and writing
 % a0 = arduino('com1', 'uno');
 
-%%
-sample = 'sample.csv';
-mouseID = 123456789;
+%% Initialise tasks
+% 
 
-[dPrime, c, beta] = d_prime(sample, mouseID);
+%% Update cumulative d'
+% if(task_finished)
+    % save task result to .csv
+    
+    sample = 'sample.csv';
+    mouseID = 123456789;
 
-display(dPrime);
-display(c);
-display(beta);
+    [dPrime, c, beta] = d_prime(sample, mouseID);
+
+    display(dPrime);
+    display(c);
+    display(beta);
+% end
