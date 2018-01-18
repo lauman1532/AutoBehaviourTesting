@@ -8,11 +8,11 @@ clear all; close all; clc
 
     fs = 44100;
     duration = 2;
-    toneFreq = 2500;
+    toneFreq = 1000;
     amplitude = 0.2;
     
     t = 0+1/fs:1/fs:duration;
-    y = amplitude*sin(2*pi*toneFreq*t);
+    y = amplitude*cos(2*pi*toneFreq*t);
     sound(y, fs);
     
     % time-domain
