@@ -12,8 +12,11 @@
 
 // Pin assignments
 #define SPEAKER_SS 23
-#define SPEAKER_PIN0 11
-#define SPEAKER_PIN1 12
+#define SPEAKER0_PIN 11
+#define SPEAKER1_PIN 12
+
+#define LICKPOT0_PIN 18
+#define LICKPOT1_PIN 19
 
 //=====================================
 // Variables
@@ -40,9 +43,11 @@ MouseCage mouseCage(23,11,12);
 //=====================================
 
 void setup(void) {
-	pinMode(SPEAKER_PIN0, OUTPUT);
+	pinMode(SPEAKER0_PIN, OUTPUT);
+	pinMode(SPEAKER1_PIN, OUTPUT);
 	pinMode(SPEAKER_SS, OUTPUT);
 
+	Serial.begin(9600);
 	SPI.begin();
 	//servo0.attach(9);
 	//servo0.write(10);
@@ -55,8 +60,10 @@ void setup(void) {
 //=====================================
 
 void loop(void) {
-	mouseCage.play_noise(0,8,5000);
-	mouseCage.play_tone(0,8,5000,500);
-	delay(5000);
+	mouseCage.play_noise(0,10,2000);
+	mouseCage.play_tone(0,10,2000,500);
+	delay(2000);
+	mouseCage.play_noise(0,255,2000);
+	mouseCage.play_tone(0,255,2000,500);
+	delay(2000);
 }
-
