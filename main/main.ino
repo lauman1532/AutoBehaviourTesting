@@ -1,4 +1,4 @@
-// Automated Mouse Cage Program
+// Automated Mouse Cage Program for Arduino Mega2560
 // Vick Lau
 
 #include <SPI.h>
@@ -10,10 +10,10 @@
 // Constants
 //=====================================
 
-// Pin assignments
-#define SPEAKER_SS 23
-#define SPEAKER0_PIN 11
-#define SPEAKER1_PIN 12
+// Pin assignments (check datasheet for low-level port name)
+#define SPEAKER_SS 22 // POT's Slave Select (SCK) for 2 speakers, pin 22 (PA0)
+#define SPEAKER0_PIN 23 // pin 23 (PA1)
+#define SPEAKER1_PIN 24 // pin 24 (PA2)
 
 #define LICKPOT0_PIN 18
 #define LICKPOT1_PIN 19
@@ -26,7 +26,7 @@
 //uint8_t tagData[5];
 //uint32_t tagID = 0;
 
-MouseCage mouseCage(23,11,12);
+MouseCage mouseCage(SPEAKER_SS, SPEAKER0_PIN, SPEAKER1_PIN);
 //Servo servo0;
 
 //String inputBuffer = "";
@@ -42,11 +42,13 @@ MouseCage mouseCage(23,11,12);
 // Setup
 //=====================================
 
-void setup(void) {
-	pinMode(SPEAKER0_PIN, OUTPUT);
+void setup(void)
+{
+	/* pinMode(SPEAKER0_PIN, OUTPUT);
 	pinMode(SPEAKER1_PIN, OUTPUT);
-	pinMode(SPEAKER_SS, OUTPUT);
-
+	pinMode(SPEAKER_SS, OUTPUT); */
+	DDRA = B00000011; // same as setting PORTA 1,2,3 to OUTPUT
+	
 	Serial.begin(9600);
 	SPI.begin();
 	//servo0.attach(9);
@@ -59,11 +61,12 @@ void setup(void) {
 // Main loop
 //=====================================
 
-void loop(void) {
-	mouseCage.play_noise(0,10,2000);
-	mouseCage.play_tone(0,10,2000,500);
+void loop(void)
+{
+	mouseCage.play_noise(0,0,2000);
+	mouseCage.play_tone(0,0,2000,500);
 	delay(2000);
-	mouseCage.play_noise(0,255,2000);
-	mouseCage.play_tone(0,255,2000,500);
+	mouseCage.play_noise(0,1,2000);
+	mouseCage.play_tone(0,1,2000,500);
 	delay(2000);
 }
