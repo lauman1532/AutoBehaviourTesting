@@ -1,9 +1,9 @@
-// Header File for Automated Mouse Cage (MouseCage.h)
-// Using Arduino Mega2560
+// MouseCage.h
+// Library for automated home-cage system for Arduino ATmega2560
 // Vick Lau
 
-#ifndef _MOUSECAGE_H_
-#define _MOUSECAGE_H_
+#ifndef MOUSECAGE_H
+#define MOUSECAGE_H
 
 #include <Arduino.h>
 #include <inttypes.h>
@@ -12,23 +12,23 @@
 
 
 // For MCP42010 digital potentiometer
-#define WRITE_POT_0 0b00010001
-#define WRITE_POT_1 0b00010010
+#define WRITE_POT0 0b00010001
+#define WRITE_POT1 0b00010010
 #define WRITE_BOTH_POT 0b00010011
+#define POT_SPI_SPEED 8000000 // 8 MHz max for Arduino (10 MHz max for MCP42010)
+
+// Timer3
+#define FREQ_TIMER3 80000
+#define TIMER3_OCR 200 // (CPU_freq/prescaler)/desired_freq, 80 kHz (Timer 3)
 
 
 class MouseCage
 {
     private:
         uint8_t speakerSS, speaker0Pin, speaker1Pin;
-        uint8_t speaker0Pin_tone, speaker1Pin_tone;
         uint8_t lickpot0Pin, lickpot1Pin;
 
-        // low-level I/O implementation (faster than digitalWrite() as some unnecessary
-        // checks are not included)
-        void set_port_fast(uint8_t pin, uint8_t state); // direct I/O (low-level port name)
-        void set_port(uint8_t pin, uint8_t state); // indirect I/O
-
+        void init_timer3(void);
         uint8_t generate_noise(void);
         void detect_response(void);
 
