@@ -45,13 +45,13 @@ MouseCage mouseCage(SPEAKER_SS, SPEAKER0_PIN, SPEAKER1_PIN);
 
 void setup(void)
 {
-	DDRA = (1U<<DDA2)|(1U<<DDA1)|(1U<<DDA0); // same as setting PORTA 1,2,3 to OUTPUT
-	PORTA |= (1U << digitalPinToPort(SPEAKER_SS)); // set SS to high initially
+    DDRA = (1U<<DDA2)|(1U<<DDA1)|(1U<<DDA0); // same as setting PORTA 1,2,3 to OUTPUT
+    PORTA |= (1U << digitalPinToPort(SPEAKER_SS)); // set SS to high initially
 
-	Serial.begin(9600);
-	SPI.begin();
+    Serial.begin(9600);
+    SPI.begin();
 
-	delay(500);
+    delay(500);
 }
 
 //=====================================
@@ -60,10 +60,10 @@ void setup(void)
 
 void loop(void)
 {
-	mouseCage.play_noise(0,0,1000);
-	//mouseCage.play_tone(0,0,1000,50);
-	delay(3000);
-	mouseCage.play_noise(0,100,1000);
-	//mouseCage.play_tone(0,60,1000,50);
-	delay(4000);
+    mouseCage.play_noise(0,0,1000);
+    //mouseCage.play_tone(0,0,1000,50);
+    delay(3000);
+    mouseCage.play_noise(0,100,1000);
+    //mouseCage.play_tone(0,60,1000,50);
+    delay(4000);
 }
