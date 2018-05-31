@@ -2,33 +2,31 @@
 // Automated Mouse Cage Program for Arduino ATmega2560
 // Vick Lau
 
-#include <SPI.h>
-#include <RFIDuino.h>
-#include "lib/Servo.h" // modified version of the original Servo.h, uses timer1 only
 #include "MouseCage.h"
+#include <SPI.h>
 
 //=====================================
 // Constants
 //=====================================
 
-// Pin assignments (check datasheet for low-level port name)
+// Pin assignments (check datasheet for port names)
 #define SPEAKER_SS 22 // POT's Slave Select pin, controlling volume of audio, pin 22 (PA0)
 #define SPEAKER0_PIN 23 // pin 23 (PA1)
 #define SPEAKER1_PIN 24 // pin 24 (PA2)
 
-#define LICKPOT0_PIN 18
+#define LICKPOT0_PIN 18 // INT
 #define LICKPOT1_PIN 19
+
+#define SERVO0_PIN 9
 
 //=====================================
 // Variables
 //=====================================
 
-//RFIDuino antenna0(1.2);
 //uint8_t tagData[5];
 //uint32_t tagID = 0;
 
-MouseCage mouseCage(SPEAKER_SS, SPEAKER0_PIN, SPEAKER1_PIN);
-//Servo servo0;
+MouseCage mouseCage;
 
 //String inputBuffer = "";
 
@@ -45,13 +43,16 @@ MouseCage mouseCage(SPEAKER_SS, SPEAKER0_PIN, SPEAKER1_PIN);
 
 void setup(void)
 {
+    /*
     DDRA = (1U<<DDA2)|(1U<<DDA1)|(1U<<DDA0); // same as setting PORTA 1,2,3 to OUTPUT
-    PORTA |= (1U << digitalPinToPort(SPEAKER_SS)); // set SS to high initially
+    PORTA = (0U<<PA2)|(0U<<PA1)|(1U<<PA0); // set SS to high initially to avoid SPI      transaction
 
     Serial.begin(9600);
     SPI.begin();
 
     delay(500);
+    */
+    mouseCage.init();
 }
 
 //=====================================
@@ -61,9 +62,11 @@ void setup(void)
 void loop(void)
 {
     mouseCage.play_noise(0,0,1000);
+    mouseCage.open_door(0);
     //mouseCage.play_tone(0,0,1000,50);
     delay(3000);
-    mouseCage.play_noise(0,100,1000);
+    mouseCage.close_door(0);
+    mouseCage.play_noise(0,10,1000);
     //mouseCage.play_tone(0,60,1000,50);
     delay(4000);
 }
