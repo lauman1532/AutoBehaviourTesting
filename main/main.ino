@@ -61,12 +61,12 @@ void setup(void)
 
 void loop(void)
 {
-    mouseCage.play_noise(0,0,1000);
-    mouseCage.open_door(0);
-    //mouseCage.play_tone(0,0,1000,50);
+    //mouseCage.play_noise(0,50,1000);
+    //mouseCage.open_door(0);
+    mouseCage.play_tone(0,30,1000,50);
     delay(3000);
-    mouseCage.close_door(0);
-    mouseCage.play_noise(0,10,1000);
-    //mouseCage.play_tone(0,60,1000,50);
+    //mouseCage.close_door(0);
+    //mouseCage.play_noise(1,50,1000);
+    mouseCage.play_tone(1,30,1000,50);
     delay(4000);
 }

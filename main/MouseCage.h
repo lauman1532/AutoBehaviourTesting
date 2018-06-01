@@ -27,10 +27,13 @@ typedef enum { isrA, isrB, isrC } timer_isr_t;
 // 16 MHz CPU, prescalar = 1 for TIMER 3
 #define FREQ_TIMER3_A 80000
 #define TIMER3_OCR_A 200 // (CPU_freq/prescaler)/desired_freq, 80 kHz (Timer3A)
+
 // Timer3 settings for door_control()
 #define FREQ_TIMER3_B 100
 #define TIMER3_OCR_B 160000 // (CPU_freq/prescaler)/desired_freq, 100 Hz (Timer3B/C)
 #define DOOR_DURATION 2000 // 2 seconds (2000 ms)
+
+#define A2M_START_MARKER '>'
 
 
 class MouseCage

@@ -117,7 +117,6 @@ ISR(TIMER3_COMPB_vect) // Timer3, Output Compare B Match interrupt vector
     }
     else
     {
-        closeDoor = true;
         disable_timer3_isr(isrB);
     }
 }
@@ -242,15 +241,18 @@ bool MouseCage::detect_tag(void)
     {
         if(antenna0.scanForTag(tagBuffer))
         {
-            Serial.write(startMarker);
+            Serial.write(A2M_START_MARKER);
             Serial.write(tagBuffer, 5);
-            Serial.write(endMarker);
             Serial.println();
             return true;
             break;
         }
         curMilis = millis();
         elaspedMillis = curMilis - prevMillis;
+    }
+    if (elaspedMillis >= 1000)
+    {
+        return false;
     }
 }
 
@@ -277,8 +279,14 @@ void MouseCage::enter_testing(void)
 {
     
     close_door(0);
-    detect_tag();
-    open_door(1);
+    if(detect_tag())
+    {
+        open_door(1);
+    }
+    else
+    {
+        open_door(0);
+    }
 }
 
 void MouseCage::detect_response(void)
