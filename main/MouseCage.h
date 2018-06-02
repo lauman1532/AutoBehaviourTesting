@@ -12,7 +12,8 @@
 #include <avr/iom2560.h>
 #include <SPI.h>
 #include "Servo.h" // modified version of the original Servo.h, uses timer1 only
-#include "RFIDuino.h" // modified version, added init(), excluded unecessary functions
+#include "RFIDuino.h" // modified version, added init(), excluded unecessary functions, 
+                      // refined timeout 
 
 typedef enum { isrA, isrB, isrC } timer_isr_t;
 
@@ -34,6 +35,7 @@ typedef enum { isrA, isrB, isrC } timer_isr_t;
 #define DOOR_DURATION 2000 // 2 seconds (2000 ms)
 
 #define A2M_START_MARKER '>'
+#define A2M_TIMEOUT 8000 // 8 seconds until timeout
 
 
 class MouseCage
@@ -46,8 +48,9 @@ class MouseCage
         RFIDuino antenna0;
 
         // uint8_t generate_noise(void);
-        void door_control(uint8_t door);
-        void enter_testing(void);
+        void door_control(uint8_t door); 
+        bool detect_tag(void);
+        //void enter_testing(void);
         void detect_response(void);
 
     public:
@@ -59,7 +62,7 @@ class MouseCage
         void play_tone(uint8_t channel, uint8_t volume, uint16_t duration, uint16_t freq);
         void open_door(uint8_t door);
         void close_door(uint8_t door);
-        bool detect_tag(void);
+        void enter_testing(void);
 };
 
 #endif

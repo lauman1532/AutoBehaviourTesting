@@ -230,32 +230,6 @@ void MouseCage::close_door(const uint8_t door)
         door1.write(0);
 }
 
-bool MouseCage::detect_tag(void)
-{
-    uint8_t tagBuffer[5] = {0};
-    uint16_t curMilis, prevMillis, elaspedMillis = 0;
-
-    curMilis = millis();
-    prevMillis = curMilis;
-    while(elaspedMillis < 1000)
-    {
-        if(antenna0.scanForTag(tagBuffer))
-        {
-            Serial.write(A2M_START_MARKER);
-            Serial.write(tagBuffer, 5);
-            Serial.println();
-            return true;
-            break;
-        }
-        curMilis = millis();
-        elaspedMillis = curMilis - prevMillis;
-    }
-    if (elaspedMillis >= 1000)
-    {
-        return false;
-    }
-}
-
 //=====================================
 // MouseCage private functions
 //=====================================
@@ -275,18 +249,48 @@ void MouseCage::door_control(uint8_t door)
     }
 }
 
+bool MouseCage::detect_tag(void)
+{
+    uint8_t tagBuffer[5] = {0};
+    uint32_t curMilis, prevMillis, elapsedMillis = 0;
+
+    curMilis = millis();
+    prevMillis = curMilis;
+    while(elapsedMillis < A2M_TIMEOUT)
+    {
+        if(antenna0.scanForTag(tagBuffer))
+        {
+            Serial.write(A2M_START_MARKER);
+            Serial.write(tagBuffer, 5);
+            Serial.println();
+            return true;
+            break;
+        }
+        curMilis = millis();
+        elapsedMillis = curMilis - prevMillis;
+    }
+    if (elapsedMillis >= A2M_TIMEOUT)
+    {
+        return false;
+    }
+}
+
 void MouseCage::enter_testing(void)
 {
-    
-    close_door(0);
-    if(detect_tag())
-    {
-        open_door(1);
-    }
-    else
-    {
-        open_door(0);
-    }
+    // if(detect_mouse()) // using IR sensor in the connector
+    // {
+            close_door(0);
+            if(detect_tag())
+            {
+                Serial.println(F("TAG DETECTED: open door 1"));
+                //open_door(1);
+            }
+            else
+            {
+                Serial.println(F("TIMEOUT: open door 0"));
+                open_door(0);
+            }
+    // }
 }
 
 void MouseCage::detect_response(void)

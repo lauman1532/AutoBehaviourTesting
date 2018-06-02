@@ -16,6 +16,8 @@
 *      http://www.robotgeek.com/rfiduino
 *
 *
+* Modified by Vick Lau
+*
 ****************************************************************************************************/
 #include "Arduino.h"
 #include "RFIDuino.h"
@@ -93,6 +95,7 @@ bool RFIDuino::decodeTag(unsigned char *buf)
     if (timeCount >= 600)
     {
       return false;
+      break;
     }
     timeCount = 0;
 

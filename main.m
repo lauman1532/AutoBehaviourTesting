@@ -1,59 +1,73 @@
 %%% main.m
-%%% 30/01/2018
+%%% 02/06/2018
 %%% Vick Lau
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 fclose all; clear all; delete(instrfindall)
 
 %% Variables
-startMarker = '<';
-endMarker = '>';
+A2MstartMarker = '>';
+M2AstartMarker = '$';
 
 %% Initialisation
-a0 = serial('COM5', 'Baudrate', 9600);
-fopen(a0);
-pause(2);
+arduino = serial('COM5', 'Baudrate', 9600); % Change COM according to your port
+fopen(arduino);
+pause(1);
 
-send_str_ard(a0, "MATLAB_RDY");
-waitForTag = 1;
+send_str_2_ard(arduino, "MATLAB_RDY");
 
 %%
 while(true)
-    if(waitForTag)
-        [isEntry, mouseID, entryTime] = mouse_entry(a0, startMarker);
-        if(isEntry)
-            save_data(mouseID, entryTime);
-            
-            waitForTag = 0;
-            break
-        end
-    end
+    mouse_entry(arduino);
 end
-fclose(a0);
+
+fclose(arduino);
 
 %% Function Definitions
-function send_str_ard(serialObj, str)
-    fprintf(serialObj, '!%s\n', str);
+function send_str_2_ard(serialObj, str)
+    fprintf(serialObj, '%c%s\n', M2AMarker, str);
 end
 
-function [isEntry, mouseID, entryTime] = mouse_entry(serialObj, startMarker)
-    isEntry = 0;
-    mouseID = 0;
-    entryTime = 0;
-    
-    x = fread(serialObj, 1, 'char')
-    if(x == startMarker)
-        tagData = fread(serialObj, 5, 'uint8')
-        entryTime = clock;
-        isEntry = 1;
-        send_str_ard(serialObj, "ENTRY");
-        
-        % tagData conversion: first byte is ignored because it is (usually) a version number
-        mouseID = uint32(bitsll(tagData(2), 24) + ...
-            bitsll(tagData(3), 16) + bitsll(tagData(4), 8) + tagData(5))
+function [data] = read_data_ard(serialObj, size, type)
+    x = fread(serialObj, 1, 'char');
+    if (x == A2MstartMarker)
+        data = fread(serialObj, size, type);
+    else
+        data = NaN;
     end
-
 end
+
+function [mouseID] = tag_conversion(tagData)
+%   tag bytes conversion to actual ID
+%   first byte is ignored because it is (usually) a version reference
+    mouseID = uint32(bitsll(tagData(2), 24) + ...
+        bitsll(tagData(3), 16) + bitsll(tagData(4), 8) + tagData(5));
+end
+
+function mouse_entry(serialObj)
+    tagData = read_str_ard(serialObj, 5, 'uint8');
+    if(~isNaN(tagData))
+       mouseID = tag_conversion(tagData)
+    end
+end
+
+%function [isEntry, mouseID, entryTime] = mouse_entry(serialObj, startMarker)
+%    isEntry = 0;
+%    mouseID = 0;
+%    entryTime = 0;
+%    
+%    x = fread(serialObj, 1, 'char')
+%    if(x == startMarker)
+%        tagData = fread(serialObj, 5, 'uint8')
+%       entryTime = clock;
+%        isEntry = 1;
+%        send_str_2_ard(serialObj, "ENTRY");
+%        
+%        % tagData conversion: first byte is ignored because it is (usually) a version number
+%        mouseID = uint32(bitsll(tagData(2), 24) + ...
+%            bitsll(tagData(3), 16) + bitsll(tagData(4), 8) + tagData(5))
+%    end
+%end
 
 function save_data(mouseID, entryTime)
 	fName = ['test_',num2str(mouseID),'.dat'];
