@@ -28,8 +28,6 @@
 
 MouseCage mouseCage;
 
-//String inputBuffer = "";
-
 //bool isTimeOut = false;
 
 //=====================================

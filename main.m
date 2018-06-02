@@ -6,15 +6,14 @@
 fclose all; clear all; delete(instrfindall)
 
 %% Variables
-A2MstartMarker = '>';
-M2AstartMarker = '$';
+
 
 %% Initialisation
 arduino = serial('COM5', 'Baudrate', 9600); % Change COM according to your port
 fopen(arduino);
 pause(1);
 
-send_str_2_ard(arduino, "MATLAB_RDY");
+send_str_2_ard(arduino,"MATLAB_RDY");
 
 %%
 while(true)
@@ -25,15 +24,15 @@ fclose(arduino);
 
 %% Function Definitions
 function send_str_2_ard(serialObj, str)
-    fprintf(serialObj, '%c%s\n', M2AMarker, str);
+    fprintf(serialObj, '$%s\n', str);
 end
 
 function [data] = read_data_ard(serialObj, size, type)
     x = fread(serialObj, 1, 'char');
-    if (x == A2MstartMarker)
+    if (x == '>')
         data = fread(serialObj, size, type);
     else
-        data = NaN;
+        data = '';
     end
 end
 
@@ -45,8 +44,8 @@ function [mouseID] = tag_conversion(tagData)
 end
 
 function mouse_entry(serialObj)
-    tagData = read_str_ard(serialObj, 5, 'uint8');
-    if(~isNaN(tagData))
+    tagData = read_data_ard(serialObj, 5, 'uint8');
+    if(~isempty(tagData))
        mouseID = tag_conversion(tagData)
     end
 end

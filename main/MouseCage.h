@@ -30,9 +30,8 @@ typedef enum { isrA, isrB, isrC } timer_isr_t;
 #define TIMER3_OCR_A 200 // (CPU_freq/prescaler)/desired_freq, 80 kHz (Timer3A)
 
 // Timer3 settings for door_control()
-#define FREQ_TIMER3_B 100
-#define TIMER3_OCR_B 160000 // (CPU_freq/prescaler)/desired_freq, 100 Hz (Timer3B/C)
-#define DOOR_DURATION 2000 // 2 seconds (2000 ms)
+#define FREQ_TIMER3_B 300
+#define TIMER3_OCR_B 53333 // (CPU_freq/prescaler)/desired_freq, 300 Hz (Timer3B/C)
 
 #define A2M_START_MARKER '>'
 #define A2M_TIMEOUT 8000 // 8 seconds until timeout
