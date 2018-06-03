@@ -276,6 +276,14 @@ bool MouseCage::detect_tag(void)
     }
 }
 
+uint32_t MouseCage::tag_conversion(uint8_t tagBuffer[5])
+{
+    uint32_t mouseID;
+
+    return mouseID = (tagBuffer[1] << 24) + (tagBuffer[2] << 16) + (tagBuffer[3] << 8)
+        + tagBuffer[4];
+}
+
 void MouseCage::enter_testing(void)
 {
     // if(detect_mouse()) // using IR sensor in the connector
