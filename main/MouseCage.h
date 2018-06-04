@@ -28,9 +28,9 @@ typedef enum { isrA, isrB, isrC } timer_isr_t;
 #define FREQ_TIMER3_A 80000
 #define TIMER3_OCR_A 200 // (CPU_freq/prescaler)/desired_freq, 80 kHz (Timer3A)
 
-// Timer3 settings for door_control()
+// Timer3 settings for RFIDUINO LEDs
 #define FREQ_TIMER3_B 300
-#define TIMER3_OCR_B 53333 // (CPU_freq/prescaler)/desired_freq, 300 Hz (Timer3B/C)
+#define TIMER3_OCR_B 53333 // (CPU_freq/prescaler)/desired_freq, 300 Hz (Timer3B)
 
 // A2M communication
 #define A2M_START_MARKER '>' // Arduino to Matlab packet marker

@@ -150,7 +150,8 @@ MouseCage::MouseCage()
     // door1Pin = 
 }
 
-MouseCage::MouseCage(uint8_t speakerSS_usr, uint8_t speaker0Pin_usr, uint8_t speaker1Pin_usr)
+MouseCage::MouseCage(uint8_t speakerSS_usr, uint8_t speaker0Pin_usr,
+    uint8_t speaker1Pin_usr)
 {
     speakerSS = speakerSS_usr;
     speaker0Pin = speaker0Pin_usr;
@@ -295,6 +296,9 @@ void MouseCage::enter_testing(void)
                 Serial.println(F("TAG DETECTED: open door 1"));
                 timer3OutputPin2 = antenna0.led2;
                 init_timer3_isr(isrB);
+                /*
+                    task confirmation from matlab
+                */
                 open_door(1);
             }
             else
