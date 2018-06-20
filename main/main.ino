@@ -19,6 +19,9 @@
 
 #define SERVO0_PIN 9
 
+//
+#define HABITUATION 1
+
 //=====================================
 // Variables
 //=====================================
@@ -59,6 +62,18 @@ void setup(void)
 
 void loop(void)
 {
-    mouseCage.enter_testing();
-    delay(5000);
+    if (HABITUATION == true)
+    {
+        mouseCage.open_door(0);
+        mouseCage.open_door(1);
+        mouseCage.play_tone(0, 10, 800, 80);
+        delay(1000);
+        mouseCage.play_tone(1, 10, 800, 80);
+    }
+    else
+    {
+        //mouseCage.play_noise(1, 10, 1000);
+        mouseCage.play_tone(1, 10, 1000, 100);
+    }
+
 }

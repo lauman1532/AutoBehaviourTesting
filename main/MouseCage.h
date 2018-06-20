@@ -28,11 +28,15 @@ typedef enum { isrA, isrB, isrC } timer_isr_t;
 #define FREQ_TIMER3_A 80000
 #define TIMER3_OCR_A 200 // (CPU_freq/prescaler)/desired_freq, 80 kHz (Timer3A)
 
-// Timer3 settings for RFIDUINO LEDs
+// Timer3 settings for RFIDuino LEDs
 #define FREQ_TIMER3_B 300
 #define TIMER3_OCR_B 53333 // (CPU_freq/prescaler)/desired_freq, 300 Hz (Timer3B)
 
-// A2M communication
+// Timer4 settings
+#define FREQ_TIMER4_A 10000
+#define TIMER4_OCR_A 1600
+
+// A2M (Arduino to Matlab) communication
 #define A2M_START_MARKER '>' // Arduino to Matlab packet marker
 #define A2M_TIMEOUT 8000 // 8 seconds until timeout
 
@@ -41,8 +45,8 @@ class MouseCage
 {
     private:
         uint8_t speakerSS, speaker0Pin, speaker1Pin;
-        uint8_t lickpot0Pin, lickpot1Pin;
-        uint8_t door0Pin, door1Pin;
+        uint8_t lickpot0Pin, lickpot1Pin, psPin;
+        uint8_t door0Pin, door1Pin, irPin;
         Servo door0, door1;
         RFIDuino antenna0;
 
@@ -50,20 +54,24 @@ class MouseCage
         void door_control(uint8_t door); 
         bool detect_tag(void);
         uint32_t tag_conversion(uint8_t tagBuffer[5]);
+        bool detect_mouse(void);
         // void enter_testing(void);
+        void set_POT(uint8_t channel, uint8_t value);
         void detect_response(void);
 
     public:
         MouseCage();
-        MouseCage(uint8_t speakerSS_usr, uint8_t speaker0Pin_usr, 
-            uint8_t speaker1Pin_usr);
+        MouseCage(uint8_t speakerSS_usr, uint8_t speaker0Pin_usr,
+            uint8_t speaker1Pin_usr, uint8_t lickpot0Pin_usr, uint8_t lickpot1Pin_usr,
+            uint8_t psPin_usr, uint8_t door0Pin_usr, uint8_t door1Pin_usr,
+            uint8_t irPin_usr);
         void init(void);
-        void set_POT(uint8_t channel, uint8_t value);
         void play_noise(uint8_t channel, uint8_t volume, uint16_t duration);
         void play_tone(uint8_t channel, uint8_t volume, uint16_t duration, uint16_t freq);
         void open_door(uint8_t door);
         void close_door(uint8_t door);
         void enter_testing(void);
+        void leaving_testing(void);
 };
 
 #endif
